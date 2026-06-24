@@ -1,5 +1,7 @@
 name: Swap
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+
 jobs:
   run-swap:
     runs-on: ubuntu-latest
