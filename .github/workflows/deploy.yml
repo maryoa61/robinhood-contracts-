@@ -12,13 +12,16 @@ jobs:
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
       - name: Build Contract
-        # حذف فایل های اضافی قبل از بیلد برای جلوگیری از تداخل
         run: |
-          rm src/HelloRobinhood.sol || true
+          rm -f src/HelloRobinhood.sol
           forge build
       - name: Deploy Contract
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           RPC_URL: https://rpc.testnet.chain.robinhood.com/
-        # استفاده از مسیر دقیق و حذف --broadcast برای تستِ خطا
-        run: forge create ./src/MySwapper.sol:MySwapper --rpc-url $RPC_URL --private-key $PRIVATE_KEY --constructor-args 0x77bF00A6A90c600f214b34BAFBB7918c0cF113A8 --broadcast
+        run: |
+          forge create ./src/MySwapper.sol:MySwapper \
+            --rpc-url $RPC_URL \
+            --private-key $PRIVATE_KEY \
+            --constructor-args 0x77bF00A6A90c600f214b34BAFBB7918c0cF113A8 \
+            --broadcast
