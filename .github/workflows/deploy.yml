@@ -1,4 +1,4 @@
-name: Deploy Contract
+سلامname: Deploy Contract
 on:
   push:
     branches: [ main ]
@@ -19,4 +19,8 @@ jobs:
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           RPC_URL: https://rpc.testnet.chain.robinhood.com/
-        run: forge create ./src/MySwapper.sol:MySwapper --rpc-url $RPC_URL --private-key $PRIVATE_KEY --constructor-args 0x77bF00A6A90c600f214b34BAFBB7918c0cF113A8 --broadcast
+        run: |
+          forge create ./src/MySwapper.sol:MySwapper \
+            --rpc-url $RPC_URL \
+            --private-key $PRIVATE_KEY \
+            --constructor-args 0x77bF00A6A90c600f214b34BAFBB7918c0cF113A8
