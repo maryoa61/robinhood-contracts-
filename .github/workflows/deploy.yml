@@ -21,4 +21,5 @@ jobs:
           forge create src/MySwapper.sol:MySwapper \
             --rpc-url $RPC_URL \
             --private-key $PRIVATE_KEY \
-            --constructor-args 0x77bF00A6A90c600f214b34BAFBB7918c0cF113A8
+            --constructor-args 0x77bF00A6A90c600f214b34BAFBB7918c0cF113A8 \
+            --broadcast
