@@ -11,12 +11,12 @@ jobs:
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
-      - name: Run Swap Script
+      - name: Run Swap
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           RPC_URL: https://rpc.testnet.chain.robinhood.com/
         run: |
-          # اجرای سواپ
+          # اجرای دستور سواپ مستقیم
           cast send 0xa342734ca2980b3d98a16ea3a052736e611a6760 \
             "executeSwap(address,address,uint256,uint256)" \
             0xC9f9c86933092BbbfFF3CCb4b105A4A94bf3Bd4E \
