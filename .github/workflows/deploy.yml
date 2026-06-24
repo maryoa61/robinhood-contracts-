@@ -1,34 +1,24 @@
-name: Deploy and Verify
-on: [push]
+name: Deploy Contract
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: nightly
-
+      - name: Build Contract
+        run: forge build
       - name: Deploy Contract
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          RH_RPC_URL: https://rpc.testnet.chain.robinhood.com
+          RPC_URL: https://rpc.testnet.chain.robinhood.com/
         run: |
-          forge create src/HelloRobinhood.sol:HelloRobinhood \
-            --rpc-url $RH_RPC_URL \
+          forge create src/MySwapper.sol:MySwapper \
+            --rpc-url $RPC_URL \
             --private-key $PRIVATE_KEY \
-            --broadcast
-
-      - name: Verify Contract
-        env:
-          RH_RPC_URL: https://rpc.testnet.chain.robinhood.com
-        run: |
-          forge verify-contract 0xc1A320cc30d9D7358096d1f1D32162680978Eb48 \
-            src/HelloRobinhood.sol:HelloRobinhood \
-            --chain-id 46630 \
-            --rpc-url $RH_RPC_URL \
-            --verifier blockscout \
-            --verifier-url https://explorer.testnet.chain.robinhood.com/api/
+            --constructor-args 0x77bF00A6A90c600f214b34BAFBB7918c0cF113A8
