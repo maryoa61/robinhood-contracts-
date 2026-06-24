@@ -1,4 +1,4 @@
-سلامname: Deploy Contract
+name: Deploy Contract
 on:
   push:
     branches: [ main ]
@@ -9,12 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
+
       - name: Build Contract
         run: |
           rm -f src/HelloRobinhood.sol
           forge build
+
       - name: Deploy Contract
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
