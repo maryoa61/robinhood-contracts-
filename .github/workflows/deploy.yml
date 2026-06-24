@@ -1,0 +1,22 @@
+name: Deploy to Robinhood
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Foundry
+        run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          source ~/.bashrc
+          foundryup
+      - name: Deploy Contract
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RH_RPC_URL: https://rpc.testnet.chain.robinhood.com
+        run: |
+          forge create src/HelloRobinhood.sol:HelloRobinhood \
+            --rpc-url $RH_RPC_URL \
+            --private-key $PRIVATE_KEY \
+            --broadcast
