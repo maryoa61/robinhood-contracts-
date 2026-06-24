@@ -1,4 +1,28 @@
-- name: Verify Contract
+name: Deploy and Verify
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Deploy Contract
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RH_RPC_URL: https://rpc.testnet.chain.robinhood.com
+        run: |
+          forge create src/HelloRobinhood.sol:HelloRobinhood \
+            --rpc-url $RH_RPC_URL \
+            --private-key $PRIVATE_KEY \
+            --broadcast
+
+      - name: Verify Contract
         env:
           RH_RPC_URL: https://rpc.testnet.chain.robinhood.com
         run: |
