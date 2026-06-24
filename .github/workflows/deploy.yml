@@ -1,21 +1,22 @@
-name: Test Swap 10 Tesla
+name: Swap Tokens
 on: [workflow_dispatch]
 
 jobs:
   swap:
     runs-on: ubuntu-latest
     steps:
-      - name: Approve and Swap
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Run Swap Script
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           RPC_URL: https://rpc.testnet.chain.robinhood.com/
         run: |
-          # 1. تاییدیه برای برداشت 10 توکن تسلا
-          echo "Approving Tesla tokens..."
-          cast send 0xC9f9c86933092BbbfFF3CCb4b105A4A94bf3Bd4E "approve(address,uint256)" 0xa342734ca2980b3d98a16ea3a052736e611a6760 10000000000000000000 --rpc-url $RPC_URL --private-key $PRIVATE_KEY
-          
-          # 2. اجرای سواپ 10 توکن تسلا به رابین‌هود
-          echo "Executing Swap..."
+          # اجرای سواپ
           cast send 0xa342734ca2980b3d98a16ea3a052736e611a6760 \
             "executeSwap(address,address,uint256,uint256)" \
             0xC9f9c86933092BbbfFF3CCb4b105A4A94bf3Bd4E \
